@@ -1,5 +1,5 @@
 # Spring 입문 주차 기본 과제   
-<img src="https://user-images.githubusercontent.com/44867889/151365270-c9f8bcec-3aeb-4463-906f-36394a36da44.png" width="400" height="400">
+![image](https://user-images.githubusercontent.com/44867889/151365270-c9f8bcec-3aeb-4463-906f-36394a36da44.png)
 
 ## 1. Requirement
 1. 전체 게시글 목록 조회 페이지
@@ -36,5 +36,9 @@
 * H2 database
   
 ## 5. 기능구현
+|조회|글쓰기|상세|
+|---|-----|
+|![image](https://user-images.githubusercontent.com/44867889/151365270-c9f8bcec-3aeb-4463-906f-36394a36da44.png)|![image](https://user-images.githubusercontent.com/44867889/151365586-de1e8752-e1ac-42b3-aa44-285b4245661b.png)|![image](https://user-images.githubusercontent.com/44867889/151365495-b9f83708-add9-4157-aa3c-6e7e759d60f1.png)|
+
 
  
