@@ -1,5 +1,5 @@
 # Spring 입문 주차 기본 과제   
-<img src="https://user-images.githubusercontent.com/44867889/151365270-c9f8bcec-3aeb-4463-906f-36394a36da44.png" width="200" height="400"/>
+<img src="https://user-images.githubusercontent.com/44867889/151365270-c9f8bcec-3aeb-4463-906f-36394a36da44.png" width="400" height="400">
 
 ## 1. Requirement
 1. 전체 게시글 목록 조회 페이지
