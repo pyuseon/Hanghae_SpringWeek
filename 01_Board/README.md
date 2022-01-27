@@ -45,5 +45,10 @@
   
 <img src="https://user-images.githubusercontent.com/44867889/151365495-b9f83708-add9-4157-aa3c-6e7e759d60f1.png"  width="70%" height="70%">    
 
+## 6. 내가 해결한 문제 
+* 여러페이지를 구현하는데 어려움을 겪었다.   
+  해결방안 : 하나의 페이지에서 hide, show기능을 사용했다. 
 
+* 디테일 페이지 정보를 받아오지 못함. 
+  해결방안 : HTML ajax 수정, 백틱을 제대로 사용하지 않아서 생긴 오류로 코드 수정을 통해 .
  
