@@ -1,9 +1,8 @@
-package com.sparta.board.domain;
+package com.example.boardlogin.model;
 
-
+import com.example.boardlogin.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
 
@@ -24,7 +23,11 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-    public Post(PostRequestDto requestDto) {
+    @Column(nullable = false)
+    private Long userId;
+
+    public Post(PostRequestDto requestDto, Long userId) {
+        this.userId = this.userId;
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
@@ -36,10 +39,11 @@ public class Post extends Timestamped{
         this.contents = contents;
     }
 
+
     public void update(PostRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
-    
+
 }

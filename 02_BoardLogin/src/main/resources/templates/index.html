@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <title>Spring Board</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+
+
+    <script>
+        // 미리 작성된 영역 - 수정하지 않으셔도 됩니다.
+        // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
+
+        $(document).ready(function () {
+            // HTML 문서를 로드할 때마다 실행합니다.
+            getPosts();
+        })
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 여기서부터 코드를 작성해주시면 됩니다.
+
+
+        // 메모를 불러와서 보여줍니다.
+        function getPosts() {
+            // 1. 기존 메모 내용을 지웁니다.
+            $('#table-body').empty();
+            $.ajax({
+                type: 'GET',
+                url: '/posts',
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let post = response[i];
+                        let id = post['id'];
+                        let username = post['username'];
+                        let title = post['title'];
+                        let contents = post['contents'];
+                        let createdAt = post['createdAt'];
+                        addHTML(id, username, title, contents, createdAt);
+                    }
+                }
+            })
+        }
+
+        function throwid(id){
+            localStorage.setItem('id', id)
+        }
+
+
+        // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
+        function addHTML(id, username, title, contents, createdAt) {
+            // 1. HTML 태그를 만듭니다.
+           let tempHtml = `<tr>
+                                <td>${title}</td>
+                                <td>${username}</td>
+                                <td>${createdAt}</td>
+                                <td><button id="${id}-detail" type="button" class="btn btn-primary"
+                                onclick=" location.href = 'posts/detail'; throwid(${id})">조회</button></td>
+                            </tr>`
+
+                $('#table-body').append(tempHtml);
+
+        }
+
+
+
+
+
+    </script>
+</head>
+<body>
+<!--<div class="background-header">-->
+
+<!--</div>-->
+<div class="background-body">
+
+</div>
+<div class="wrap">
+    <div id="buttons" align="right">
+        <!--글쓰기 버튼-->
+<!--   style = "display : none"     -->
+        <button onclick = "location.href = '/posting'" id="btn-post-box" type="button" class="btn btn-primary" >글쓰기
+        </button>
+        <!--    로그인 버튼-->
+        <button onclick="openClose()" id="btn-login" type="button" class="btn btn-primary">로그인
+        </button>
+        <!--    로그아웃 버튼-->
+<!--        <button onclick="openClose()" id="btn-logout" type="button" class="btn btn-primary">로그아웃-->
+<!--        </button>-->
+        <form id="my_form" method="post" action="/user/logout" >
+            <button class="btn btn-primary" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</button>
+        </form>
+    </div>
+
+
+    <!--    포스팅 목록-->
+    <div id="list-box" class="area-read">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성자명</th>
+                <th>작성날짜</th>
+                <th>조회</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+
+        </table>
+    </div>
+
+
+</div>
+</body>
+
+
+
+
+
+
+
+</html>

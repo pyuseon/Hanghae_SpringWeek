@@ -8,8 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Getter // 데이터 조회를 위해서는 Getter가 필요하다.
 @MappedSuperclass // Entity가 자동으로 컬럼으로 인식합니다.
