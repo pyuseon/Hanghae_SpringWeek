@@ -29,8 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 // CSRF protection 을 비활성화
         http.csrf().disable();
-
-
         http.authorizeRequests()
                 .antMatchers("/").permitAll() // This will be your home screen URL
                 .antMatchers("/comment/**").permitAll()

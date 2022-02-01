@@ -3,13 +3,19 @@ package com.example.boardlogin.service;
 import com.example.boardlogin.dto.SignupRequestDto;
 import com.example.boardlogin.model.User;
 import com.example.boardlogin.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -28,12 +34,24 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
         }
 
+
 // 패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
-
-
         User user = new User(username, password, email);
         userRepository.save(user);
     }
+
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+
+        return validatorResult;
+    }
+
+
 }

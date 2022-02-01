@@ -42,8 +42,6 @@ public class User {
     public User(Long id, String username) {
         this.id = id;
         this.username = username;
-
-
     }
 
     public User(String username, String password, String email,Long kakaoId) {
