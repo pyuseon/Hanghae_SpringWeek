@@ -3,8 +3,10 @@ package com.example.boardlogin.controller;
 import com.example.boardlogin.dto.CommentRequestDto;
 import com.example.boardlogin.model.Comment;
 import com.example.boardlogin.repository.CommentRepository;
+import com.example.boardlogin.security.UserDetailsImpl;
 import com.example.boardlogin.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +21,15 @@ public class CommentController {
 
 
     // 댓글 생성하기
-    @PostMapping("/comment")
+    @PostMapping("/write")
     // @RequestBody 요청이 들어있는 바디에 들어있는 친구를 가져와라
-    public Comment createComment(@RequestBody CommentRequestDto requestDto){
+    public Comment createComment(@RequestBody CommentRequestDto requestDto,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
         //        return postRepository.save(post);
-        return commentService.createComment(requestDto);
+        Long userId = userDetails.getUser().getId();
+        String username = userDetails.getUser().getUsername();
+        Comment comment = new Comment(requestDto, userId, username);
+        return commentRepository.save(comment);
     }
 
     @GetMapping("/comment/{postId}")

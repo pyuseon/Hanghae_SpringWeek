@@ -30,7 +30,8 @@ public class PostController {
 
         // 로그인 되어있는 회원 테이블의 ID
         Long userId = userDetails.getUser().getId();
-        Post post = new Post(requestDto, userId);
+        String username = userDetails.getUser().getUsername();
+        Post post = new Post(requestDto, userId, username);
         return  postRepository.save(post);
     }
 
@@ -52,7 +53,8 @@ public class PostController {
     }
 
     @PutMapping("/posts/detail/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+    public Long updatePost(@PathVariable Long id,
+                           @RequestBody PostRequestDto requestDto) {
         return postService.update(id, requestDto);
     }
 

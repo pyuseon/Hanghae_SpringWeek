@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -95,15 +95,22 @@
 <!--   style = "display : none"     -->
         <button onclick = "location.href = '/posting'" id="btn-post-box" type="button" class="btn btn-primary" >글쓰기
         </button>
-        <!--    로그인 버튼-->
-        <button onclick="openClose()" id="btn-login" type="button" class="btn btn-primary">로그인
-        </button>
         <!--    로그아웃 버튼-->
-<!--        <button onclick="openClose()" id="btn-logout" type="button" class="btn btn-primary">로그아웃-->
-<!--        </button>-->
-        <form id="my_form" method="post" action="/user/logout" >
-            <button class="btn btn-primary" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</button>
-        </form>
+        <!--        <button onclick="openClose()" id="btn-logout" type="button" class="btn btn-primary">로그아웃-->
+        <!--        </button>-->
+        <div   th:if="${#authorization.expr('isAuthenticated()')}">
+            <form id="my_form" method="post" action="/user/logout">
+                <button class="btn btn-primary" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</button>
+            </form>
+        </div>
+        <!--    로그인 버튼-->
+        <!--/*@thymesVar id="#authorization" type=""*/-->
+        <div th:unless="${#authorization.expr('isAuthenticated()')}" >
+        <button  onclick="location.href = '/user/login'" th:href = "@{/user/login}" id="btn-login" type="button" class="btn btn-primary">로그인
+        </button>
+        </div>
+
+
     </div>
 
 

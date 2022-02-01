@@ -14,23 +14,28 @@ public class Comment extends Timestamped{
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private Long postId;
 
-//    @Column(nullable = false)
-//    private String username;
-//
-//    @Column(nullable = false)
-//    private String title;
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String contents;
 
-    public Comment(CommentRequestDto requestDto) {
+
+
+    public Comment(CommentRequestDto requestDto, Long userId, String username) {
 //        this.username = requestDto.getUsername();
 //        this.title = requestDto.getTitle();
         this.postId = requestDto.getPostId();
         this.id = requestDto.getId();
         this.contents = requestDto.getContents();
+        this.userId = userId;
+        this.username = username;
     }
 
     public Comment(Long id, Long postId, String contents) {

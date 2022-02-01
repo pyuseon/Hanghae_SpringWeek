@@ -18,11 +18,11 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment createComment(CommentRequestDto requestDto){
-        Comment comment = new Comment(requestDto);
-        commentRepository.save(comment);
-        return comment;
-    }
+//    public Comment createComment(Comment requestDto){
+//        Comment comment = new Comment(requestDto);
+//        commentRepository.save(comment);
+//        return comment;
+//    }
 
 
     @Transactional // 업데이트에 꼭 반영 해줘야 된다 !

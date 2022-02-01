@@ -1,10 +1,7 @@
 package com.example.boardlogin.controller;
 
-import com.example.boardlogin.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -23,8 +20,9 @@ public class PageController {
     }
 
     @GetMapping("/")
-    public String home(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        model.addAttribute("username", userDetails.getUsername());
+    public String home(){
+//    public String home(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        model.addAttribute("username", userDetails.getUsername());
         return "index";
     }
 }

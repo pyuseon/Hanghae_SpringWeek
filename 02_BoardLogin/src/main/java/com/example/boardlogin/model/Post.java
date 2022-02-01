@@ -15,9 +15,6 @@ public class Post extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -26,11 +23,14 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private Long userId;
 
-    public Post(PostRequestDto requestDto, Long userId) {
-        this.userId = this.userId;
-        this.username = requestDto.getUsername();
+    @Column(nullable = false)
+    private String username;
+
+    public Post(PostRequestDto requestDto, Long userId, String username) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.userId = userId;
+        this.username = username;
     }
 
     public Post(String username, String title, String contents) {
