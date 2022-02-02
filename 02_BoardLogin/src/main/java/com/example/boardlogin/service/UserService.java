@@ -29,17 +29,30 @@ public class UserService {
     public void registerUser(SignupRequestDto requestDto) {
 // 회원 ID 중복 확인
         String username = requestDto.getUsername();
+        String password = requestDto.getPassword();
+        String passwordCheck = requestDto.getPasswordCheck();
         Optional<User> found = userRepository.findByUsername(username);
+
         if (found.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
+            throw new NullPointerException("중복된 닉네임 입니다.");
         }
 
+        // 패스워드가 일치 하지 않을때
+        if(!password.equals(passwordCheck)){
+            throw new NullPointerException("비밀번호가 일치하지 않습니다.");
+        }
 
-// 패스워드 암호화
-        String password = passwordEncoder.encode(requestDto.getPassword());
-        String email = requestDto.getEmail();
-        User user = new User(username, password, email);
+        // 비밀번호에 아이디 문자열 포함 여부 확인
+        if(password.contains(username)){
+            throw new NullPointerException("비밀번호에 아이디가 포함되어 있습니다.");
+        }
+
+        // 패스워드 암호화
+        password = passwordEncoder.encode(requestDto.getPassword());
+
+        User user = new User(username, password, passwordCheck);
         userRepository.save(user);
+
     }
 
     public Map<String, String> validateHandling(Errors errors) {
@@ -52,6 +65,8 @@ public class UserService {
 
         return validatorResult;
     }
+
+
 
 
 }

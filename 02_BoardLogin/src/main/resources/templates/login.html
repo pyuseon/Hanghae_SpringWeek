@@ -7,13 +7,40 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <meta charset="UTF-8">
+
   <title>로그인 페이지</title>
+<script>
+
+  $(document).ready(function () {
+    // HTML 문서를 로드할 때마다 실행합니다.
+    loginCheck()
+  })
+
+
+  function loginCheck(){
+  let currentUser = $(`#currentUser`).text().trim();
+  if(currentUser !== ''){
+  confirm("이미 로그인 되어있습니다. ")
+  window.location.href = "/"
+  }
+  }
+
+  </script>
+
 </head>
 <body>
 <div id="login-form">
-  <div id="login-title">Log into Select Shop</div>
+
+  <div id="header-title-login-user"  style = "display:none">
+    <!--/*@thymesVar id="username" type=""*/-->
+    <span id = "currentUser" th:text="${username}"></span> 님의
+  </div>
+
+
+  <div id="login-title">Log into Board</div>
   <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=aa1f46ca12391ff365a0f7fe58f7cda7&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
     카카오로 로그인하기
   </button>
@@ -29,7 +56,7 @@
 
     <button id="login-id-submit">로그인</button>
   </form>
-  <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">로그인에 실패하였습니다.</div>
+  <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">"닉네임 또는 패스워드를 확인해주세요"</div>
 </div>
 </body>
 <script>

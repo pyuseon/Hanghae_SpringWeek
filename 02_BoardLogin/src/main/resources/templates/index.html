@@ -31,6 +31,20 @@
         })
 
 
+
+
+        function postingClick(){
+            let currentUser = $(`#currentUser`).text().trim();
+            if(currentUser === ''){
+                alert("로그인이 필요합니다")
+                window.location.href = "/user/login"
+            }else{
+                window.location.href = "/posting"
+            }
+        }
+
+
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // 여기서부터 코드를 작성해주시면 됩니다.
 
@@ -69,16 +83,10 @@
                                 <td>${username}</td>
                                 <td>${createdAt}</td>
                                 <td><button id="${id}-detail" type="button" class="btn btn-primary"
-                                onclick=" location.href = 'posts/detail'; throwid(${id})">조회</button></td>
+                                onclick=" location.href = '/posts/detail'; throwid(${id})">조회</button></td>
                             </tr>`
-
                 $('#table-body').append(tempHtml);
-
         }
-
-
-
-
 
     </script>
 </head>
@@ -90,10 +98,14 @@
 
 </div>
 <div class="wrap">
+    <div id="header-title-login-user"  style = "display:none">
+        <!--/*@thymesVar id="username" type=""*/-->
+        <span id = "currentUser" th:text="${username}"></span>
+    </div>
     <div id="buttons" align="right">
         <!--글쓰기 버튼-->
 <!--   style = "display : none"     -->
-        <button onclick = "location.href = '/posting'" id="btn-post-box" type="button" class="btn btn-primary" >글쓰기
+        <button onclick = "postingClick()" id="btn-post-box" type="button" class="btn btn-primary" >글쓰기
         </button>
         <!--    로그아웃 버튼-->
         <!--        <button onclick="openClose()" id="btn-logout" type="button" class="btn btn-primary">로그아웃-->

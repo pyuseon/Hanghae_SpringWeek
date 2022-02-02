@@ -34,18 +34,15 @@ public class CommentController {
 
     @GetMapping("/comment/{postId}")
     public List<Comment> showComments(@PathVariable Long postId) {
-        //        comment = (Comment) commentRepository.findAllByIdOrderByModifiedAtDesc(postId).orElseThrow(
-//                () -> new IllegalArgumentException("등록된 댓글이 없습니다.")
-//        );
         return commentRepository.findAllByPostIdOrderByModifiedAtDesc(postId);
     }
 
-    @PutMapping("/comment/{id}")
+    @PutMapping("/commenting/{id}")
     public Long updatePost(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
         return commentService.update(id, requestDto);
     }
 
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/commenting/{id}")
     public Long deletePost(@PathVariable Long id){
         commentRepository.deleteById(id);
         return id;

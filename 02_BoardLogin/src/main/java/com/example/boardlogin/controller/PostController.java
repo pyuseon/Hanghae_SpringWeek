@@ -52,17 +52,21 @@ public class PostController {
         return post;
     }
 
-    @PutMapping("/posts/detail/{id}")
+    @PutMapping("/posting/detail/{id}")
     public Long updatePost(@PathVariable Long id,
                            @RequestBody PostRequestDto requestDto) {
         return postService.update(id, requestDto);
     }
 
-    @DeleteMapping("/posts/detail/{id}")
+    @DeleteMapping("/posting/detail/{id}")
     public Long deletePost(@PathVariable Long id){
         postRepository.deleteById(id);
         return id;
     }
 
-
+    //로그인 사용자 정보 받아오기
+    @GetMapping("/post/current")
+    public String getUserinfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userDetails.getUser().getUsername();
+    }
 }

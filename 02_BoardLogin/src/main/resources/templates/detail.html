@@ -20,6 +20,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 
 
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
 
 
     <script>
@@ -35,37 +40,9 @@
             getComments(detailId);
         })
 
-        // function getCurrent(){
-        //     let currentUsername = '';
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: `/user/info`,
-        //         success: function (response) {
-        //             currentUsername = response['username'];
-        //             // console.log(loginUsername)
-        //             // if(loginUsername === '') {
-        //             //     alert('로그인을 해주세요!');
-        //             //     location.href = "/user/login"
-        //             // }
-        //         }})
-        //     console.log(currentUsername);
-        //     return currentUsername;
-        // }
-        //
-        // let currentUsername = getCurrent();
-        // console.log(currentUsername);
-
-
-
-
-
         function isValidContents(contents) {
-            if (contents == '') {
-                alert('내용을 입력해주세요');
-                return false;
-            }
-            if (contents.trim().length > 140) {
-                alert('공백 포함 140자 이하로 입력해주세요');
+            if (contents.trim().length < 1) {
+                alert('댓글 내용을 입력해주세요');
                 return false;
             }
             return true;
@@ -89,7 +66,28 @@
             $(`#${id}-edit`).hide();
         }
 
+        function getCurrent(){
+            var current;
+            $.ajax({
+                type: 'GET',
+                url: `/post/current`,
+                async:false,
+                success: function(response) {
+                        current = response
+                    }
+            })
+            console.log(current);
+            return current;
+        }
 
+
+        function loginCheck(){
+            let currentUser = $(`#currentUser`).text().trim();
+            if(currentUser === ''){
+                confirm("로그인이 필요한 기능입니다.")
+                window.location.href = "/user/login"
+            }
+        }
 
 
 
@@ -104,12 +102,17 @@
                 type: 'GET',
                 url: `/posts/detail/${id}`,
                 success: function (response) {
-                    alert('조회에 성공하였습니다.');
+                    // alert('조회에 성공하였습니다.');
                     let posts = response;
                     let username = posts['username'];
                     let title = posts['title'];
                     let contents = posts['contents'];
                     let createdAt = posts['createdAt'];
+                    let currentName = getCurrent();
+                    let hide = '';
+                    if (currentName != username){
+                        hide = "hide";
+                    }
                     let tempHtml = `<div class="card">
                                     <!-- date/username 영역 -->
                                     <div class="metadata">
@@ -134,7 +137,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="footer">
+                                    <div class="footer ${hide}">
                                     <img id="${id}-edit" class="icon-start-edit" src="/images/edit.png" alt="" onclick="editPost('${id}')">
                                     <img id="${id}-delete" class="icon-delete" src="/images/delete.png" alt="" onclick="deleteOne('${id}')">
                                     <img id="${id}-submit" class="icon-end-edit" src="/images/done.png" alt="" onclick="submitEdit('${id}')">
@@ -166,7 +169,7 @@
             // 4. PUT /api/posts/{id} 에 data를 전달합니다.
             $.ajax({
                 type: "PUT",
-                url: `/posts/detail/${id}`,
+                url: `/posting/detail/${id}`,
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
@@ -176,12 +179,13 @@
             });
         }
 
+
         // 메모를 삭제합니다.
         function deleteOne(id) {
             // 1. DELETE /posts/{id} 에 요청해서 메모를 삭제합니다.
             $.ajax({
                 type: "DELETE",
-                url: `/posts/detail/${id}`,
+                url: `/posting/detail/${id}`,
                 success: function (response) {
                     alert('메시지 삭제에 성공하였습니다.');
                     window.location.href = '/';
@@ -201,7 +205,7 @@
             let targetId = detailId;
 
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
-            if (isValidContents(contents) == false) {
+            if (isValidContents(contents) === false) {
                 return;
             }
 
@@ -216,7 +220,6 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
-                        alert('댓글이 성공적으로 작성되었습니다.');
                         window.location.reload();
                 }
             });
@@ -239,6 +242,13 @@
                         let modifiedAt = comment['modifiedAt'];
                         let commentId = comment['id'];
                         let commentUsername = comment['username'];
+                        let currentName = getCurrent();
+                        let hide = ''
+                        if (currentName != commentUsername){
+                            hide = "hide";
+                            console.log(hide)
+                        }
+                        // language=HTML format=false
                         let tempHtml = `<div class="card">
                                     <!-- date/username 영역 -->
                                      <div class="metadata">
@@ -260,15 +270,13 @@
                                             <textarea id="${commentId}-comment-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
                                         </div>
                                     <!-- contents 조회/수정 영역-->
-
-                                    <div class="footer">
+                                    <div class="footer ${hide}">
                                     <img id="${commentId}-comment-edit" class="icon-start-edit" src="/images/edit.png" alt="" onclick="editComment('${commentId}')">
-                                    <img id="${commentId}-comment-delete" class="icon-delete" src="/images/delete.png" alt="" onclick="deleteComment('${commentId}')">
+                                    <img id="${commentId}-comment-delete" class="icon-delete" src="/images/delete.png" alt="" onclick="deleteCommentConfirm('${commentId}')">
                                     <img id="${commentId}-comment-submit" class="icon-end-edit" src="/images/done.png" alt="" onclick="submitEditComment('${commentId}')">
 
                                    </div>
-                                </div>`
-
+                                </div> `
                         $('#comment-box').append(tempHtml);
                     }
 
@@ -307,7 +315,7 @@
             // 4. PUT /api/posts/{id} 에 data를 전달합니다.
             $.ajax({
                 type: "PUT",
-                url: `/comment/${id}`,
+                url: `/commenting/${id}`,
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (response) {
@@ -317,18 +325,28 @@
             });
         }
 
+
         // 메모를 삭제합니다.
         function deleteComment(id) {
             // 1. DELETE /posts/{id} 에 요청해서 메모를 삭제합니다.
             $.ajax({
                 type: "DELETE",
-                url: `/comment/${id}`,
+                url: `/commenting/${id}`,
                 success: function (response) {
                     alert('댓글 삭제에 성공하였습니다.');
                     window.location.reload();
                 }
             })
         }
+
+        function deleteCommentConfirm(id){
+            let result = confirm("정말로 삭제하시겠습니까?")
+            if(result){
+                deleteComment(id)
+            }
+
+        }
+
     </script>
 </head>
 
@@ -338,6 +356,10 @@
 <!--</div>-->
 
     <div class="wrap">
+        <div id="header-title-login-user"  style = "display:none">
+            <!--/*@thymesVar id="username" type=""*/-->
+            <span id = "currentUser" th:text="${username}"></span> 님의
+        </div>
 
         <div id="buttons" align="right">
             <!--글쓰기 버튼-->
@@ -366,7 +388,7 @@
 
         </div>
 
-        <div id="comment-post">
+        <div id="comment-post" onclick = "loginCheck()">
             <textarea   id="comment-postbox" class="ti-edit card"  cols="30" > </textarea>
             <button onclick = "writeComment()" id="btn-post-box2" type="button" class="btn btn-primary" >댓글작성하기
             </button>

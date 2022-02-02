@@ -1,7 +1,6 @@
 package com.example.boardlogin.controller;
 
 import com.example.boardlogin.dto.SignupRequestDto;
-import com.example.boardlogin.model.User;
 import com.example.boardlogin.security.UserDetailsImpl;
 import com.example.boardlogin.service.KakaoUserService;
 import com.example.boardlogin.service.UserService;
@@ -32,7 +31,12 @@ public class UserController {
 
     // 회원 로그인 페이지
     @GetMapping("/user/login")
-    public String login() {
+    public String login(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(userDetails == null){
+            model.addAttribute("username", "");
+        }else {
+            model.addAttribute("username", userDetails.getUsername());
+        };
         return "login";
     }
 
@@ -48,34 +52,27 @@ public class UserController {
         if (errors.hasErrors()) {
             // 회원가입 실패시, 입력 데이터를 유지
             model.addAttribute("requestDto", requestDto);
-
             // 유효성 통과 못한 필드와 메시지를 핸들링
             Map<String, String> validatorResult = userService.validateHandling(errors);
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
             return "signup";
-
         }
-        userService.registerUser(requestDto);
+        try{ userService.registerUser(requestDto);
+        }catch (NullPointerException error){
+            model.addAttribute("error", error.getMessage());
+            return "signup";
+        }
+//        userService.registerUser(requestDto);
         return "redirect:/user/login";
     }
-
     // 카카오 로그인
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         kakaoUserService.kakaoLogin(code);
         return "redirect:/";
     }
-
-    //로그인 사용자 정보 받아오기
-    @GetMapping("/user/info")
-    public User getUserinfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long userId = userDetails.getUser().getId();
-        String username = userDetails.getUser().getUsername();
-        return new User(userId, username);
-    }
-
 
 }
 
