@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity // DB 테이블 역할을 합니다.
 public class User {
 
+
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -25,19 +26,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String passwordCheck;
-
     @Column(unique = true)
     private Long kakaoId;
 
 
-    public User(String username, String password, String passwordCheck ){
+
+    public User(String username, String password){
         this.username = username;
         this.password = password;
-        this.passwordCheck = passwordCheck;
+
+    }
 
 
+    public User(String username, String password, String passwordCheck){
+        this.username = username;
+        this.password = password;
     }
 
     public User(Long id, String username) {
@@ -50,4 +53,6 @@ public class User {
         this.password = password;
         this.kakaoId = kakaoId;
     }
+
+
 }
