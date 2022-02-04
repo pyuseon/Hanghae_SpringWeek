@@ -19,7 +19,6 @@ public class SignupValidator {
     }
     public static void validateSignupInput(String username, String password, String passwordCheck) {
         String usernamePattern = "^[a-zA-Z0-9]*$"; //숫자만
-
 //        Optional<User> found;
 //        found = UserService.getId(username);
 //        Optional<User> found = null;

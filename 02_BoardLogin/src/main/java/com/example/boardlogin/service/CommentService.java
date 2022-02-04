@@ -15,6 +15,7 @@ public class CommentService {
 
     @Autowired
     public CommentService(CommentRepository commentRepository) {
+
         this.commentRepository = commentRepository;
     }
 
