@@ -17,11 +17,12 @@ public class FoodService {
         this.foodRepository = foodRepository;
     }
 
-    public Food createFood(FoodDto requestDto, Long restaurantId) throws Exception {
+    public int createFood(FoodDto requestDto, Long restaurantId) throws Exception {
         String name = requestDto.getName();
         Long price = requestDto.getPrice();
         List<Food> found = foodRepository.findByRestaurantIdAndName(restaurantId,name);
 
+        System.out.println(found.size());
         if(found.size() != 0){
             throw new Exception("중복되는 메뉴가 존재합니다.");
         }else if(price <100 || price >1000000) {
@@ -33,7 +34,7 @@ public class FoodService {
         Food food = new Food(requestDto, restaurantId);
         foodRepository.save(food);
 
-        return food;
+        return found.size();
     }
 
     public List<Food> getFood(Long restaurantId) {

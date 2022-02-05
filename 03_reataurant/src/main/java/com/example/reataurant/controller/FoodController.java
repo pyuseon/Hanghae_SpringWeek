@@ -7,6 +7,7 @@ import com.example.reataurant.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,22 +24,24 @@ public class FoodController {
                                     @PathVariable(value = "restaurantId") Long restaurantId)
             throws Exception {
 
-        for (FoodDto foodDto : foodDtos) {
-             foodService.createFood(foodDto, restaurantId);
+        List<String> foodNames= new ArrayList<String>();
+        for(FoodDto foodDto : foodDtos){
+            foodNames.add(foodDto.getName());
         }
-        return foodDtos;
+
+        // 리스트 내 중복값 체크 https://doing7.tistory.com/145
+       if(foodNames.size() != foodNames.stream().distinct().count()){
+            throw new Exception("중복되는 메뉴가 존재합니다.");
+        }
+
+        for  (FoodDto foodDto : foodDtos) {
+            int found = foodService.createFood(foodDto, restaurantId);
+                if(found != 0){
+                    break;
+                }
+            }
+            return null;
     }
-
-//    public Boolean createEmployee(@Valid @RequestBody List<Employee> lstEmployee) {
-//        try{
-//            for(Employee emp : lstEmployee){
-//                employeeService.save(employee);
-//            }
-//            return true;
-//        }catch(Exception e){}
-//        return false;
-//    }
-
 
     @GetMapping("/restaurant/{restaurantId}/foods")
     public List<Food> getFood(@PathVariable(value = "restaurantId") Long restaurantId){
