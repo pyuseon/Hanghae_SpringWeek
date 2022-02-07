@@ -22,7 +22,6 @@ public class FoodService {
         Long price = requestDto.getPrice();
         List<Food> found = foodRepository.findByRestaurantIdAndName(restaurantId,name);
 
-        System.out.println(found.size());
         if(found.size() != 0){
             throw new Exception("중복되는 메뉴가 존재합니다.");
         }else if(price <100 || price >1000000) {

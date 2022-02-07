@@ -1,6 +1,5 @@
 package com.example.reataurant.service;
 
-import com.example.reataurant.dto.DetailsResponseDto;
 import com.example.reataurant.dto.DetailsRequestDto;
 import com.example.reataurant.model.Food;
 import com.example.reataurant.model.OrderDetails;
@@ -43,7 +42,6 @@ public class OrderService {
         int totalPrice = 0;
 
         List <OrderDetails> orderDetailsList = new ArrayList<>(); // 데이터 입력 리스트
-        List <DetailsResponseDto> detailsResponseDtoList= new ArrayList<>(); // 결과 출력 리스트
 
         for (DetailsRequestDto order : detailsRequestDtos) {
             Optional<Food> food = foodRepository.findOneByRestaurantIdAndId(restaurantId, order.getId());
@@ -63,8 +61,6 @@ public class OrderService {
             OrderDetails orderDetail = new OrderDetails(foodName,quantity, price);
             orderDetailsRepository.save(orderDetail);
             orderDetailsList.add(orderDetail);
-//            DetailsResponseDto detailsDto = new  DetailsResponseDto(foodName,price, quantity);
-//            detailsResponseDtoList.add(detailsDto);
 
         }
         if(totalPrice < restaurant.get().getMinOrderPrice()){
@@ -79,11 +75,6 @@ public class OrderService {
         orderRepository.save(orders);
 
         return orders;
-//                new OrderResponseDto(restaurant.get().getName(),
-//                detailsResponseDtoList, restaurant.get().getDeliveryFee(), totalPrice);
-
-
-
     }
 
     @Transactional
