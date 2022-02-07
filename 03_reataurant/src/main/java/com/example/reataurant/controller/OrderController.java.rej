@@ -1,6 +1,0 @@
-diff a/03_reataurant/src/main/java/com/example/reataurant/controller/OrderController.java b/03_reataurant/src/main/java/com/example/reataurant/controller/OrderController.java	(rejected hunks)
-@@ -0,0 +1,4 @@
-+package com.example.reataurant.controller;
-+
-+public class OrderController {
-+}

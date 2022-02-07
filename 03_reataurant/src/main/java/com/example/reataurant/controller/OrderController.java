@@ -3,7 +3,6 @@ package com.example.reataurant.controller;
 
 import com.example.reataurant.dto.DetailsRequestDto;
 import com.example.reataurant.dto.OrderRequestDto;
-import com.example.reataurant.dto.OrderResponseDto;
 import com.example.reataurant.model.Orders;
 import com.example.reataurant.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +26,11 @@ public class OrderController {
 
 
     @PostMapping("/order/request")
-    public OrderResponseDto addOrders(@RequestBody OrderRequestDto requestDto) throws Exception {
+    public Orders addOrders(@RequestBody OrderRequestDto requestDto) throws Exception {
         {
             Long restaurantId = requestDto.getRestaurantId();
             List<DetailsRequestDto> orderListDto = requestDto.getFoods();
-            return  orderService.addOrders(orderListDto, restaurantId);
+            return orderService.addOrders(orderListDto, restaurantId);
         }
     }
 

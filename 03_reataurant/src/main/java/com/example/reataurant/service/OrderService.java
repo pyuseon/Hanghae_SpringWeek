@@ -2,7 +2,6 @@ package com.example.reataurant.service;
 
 import com.example.reataurant.dto.DetailsResponseDto;
 import com.example.reataurant.dto.DetailsRequestDto;
-import com.example.reataurant.dto.OrderResponseDto;
 import com.example.reataurant.model.Food;
 import com.example.reataurant.model.OrderDetails;
 import com.example.reataurant.model.Orders;
@@ -35,7 +34,7 @@ public class OrderService {
         this.orderDetailsRepository = orderDetailsRepository;
     }
 
-    public OrderResponseDto addOrders(List<DetailsRequestDto> detailsRequestDtos, Long restaurantId) throws Exception {
+    public Orders addOrders(List<DetailsRequestDto> detailsRequestDtos, Long restaurantId) throws Exception {
 
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
         if(!restaurant.isPresent()){
@@ -64,8 +63,8 @@ public class OrderService {
             OrderDetails orderDetail = new OrderDetails(foodName,quantity, price);
             orderDetailsRepository.save(orderDetail);
             orderDetailsList.add(orderDetail);
-            DetailsResponseDto detailsDto = new  DetailsResponseDto(foodName,price, quantity);
-            detailsResponseDtoList.add(detailsDto);
+//            DetailsResponseDto detailsDto = new  DetailsResponseDto(foodName,price, quantity);
+//            detailsResponseDtoList.add(detailsDto);
 
         }
         if(totalPrice < restaurant.get().getMinOrderPrice()){
@@ -79,8 +78,9 @@ public class OrderService {
 
         orderRepository.save(orders);
 
-        return new OrderResponseDto(restaurant.get().getName(),
-                detailsResponseDtoList, restaurant.get().getDeliveryFee(), totalPrice);
+        return orders;
+//                new OrderResponseDto(restaurant.get().getName(),
+//                detailsResponseDtoList, restaurant.get().getDeliveryFee(), totalPrice);
 
 
 
@@ -88,19 +88,6 @@ public class OrderService {
 
     @Transactional
     public List<Orders> getOrders() {
-//        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
-//        List<Orders> ordersList = orderRepository.findAll();
-//
-//        for(Orders order: ordersList){
-//            String restaurantName = order.getRestaurantName();
-//            Long deliveryPrice = order.getDeliveryPrice();
-//            Integer totalPrice = order.getTotalPrice();
-//            List<OrderDetails> orderDetailsList = order.getFoods();
-//            System.out.println(orderDetailsList);
-//        }
-
-
-
         return orderRepository.findAll();
     }
 }
