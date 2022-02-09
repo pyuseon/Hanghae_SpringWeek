@@ -3,7 +3,7 @@ package com.example.boardlogin.service;
 import com.example.boardlogin.dto.SignupRequestDto;
 import com.example.boardlogin.model.User;
 import com.example.boardlogin.repository.UserRepository;
-import com.example.boardlogin.vailidator.SignupValidator;
+import com.example.boardlogin.validator.SignupValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
