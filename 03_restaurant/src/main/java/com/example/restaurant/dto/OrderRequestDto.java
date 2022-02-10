@@ -12,6 +12,5 @@ import java.util.List;
 public class OrderRequestDto {
     private final Long restaurantId;
     private final List<DetailsRequestDto> foods;
-    private final Long x;
-    private final Long y;
+
 }

@@ -44,7 +44,6 @@ public class UserService {
             userRepository.save(user);
         }else{
             // 유저의 경우 닉네임 저장
-            String nickname = requestDto.getNickname();
             User user = new User(username, password,null, requestDto.getNickname(), role);
             userRepository.save(user);
         }

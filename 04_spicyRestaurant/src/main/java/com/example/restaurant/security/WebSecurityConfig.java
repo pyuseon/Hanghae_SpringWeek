@@ -30,21 +30,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 // 회원 관리 처리 API (POST /user/**) 에 대해 CSRF 무시
         http.csrf().disable(); // post 요청은 처리 없이 가능함.
-//                .ignoringAntMatchers("/user/**");
         http.authorizeRequests()
-// image 폴더를 login 없이 허용
-                .antMatchers("/restaurant**").permitAll()
-// css 폴더를 login 없이 허용
-                .antMatchers("/food**").permitAll()
-// 회원 관리 처리 API 전부를 login 없이 허용
-                .antMatchers("/order**").permitAll()
-// 그 외 어떤 요청이든 '인증'
-                .anyRequest().hasRole("USER")
+                .antMatchers("/user/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
 // [로그인 기능]
                 .formLogin()
-// 로그인 View 제공 (GET /user/login)
-//                .loginPage("/user/login")
 // 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
 // 로그인 처리 후 성공 시 URL
@@ -58,9 +49,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 // 로그아웃 처리 URL
                 .logoutUrl("/user/logout")
                 .permitAll();
-//                .and()
-//                .exceptionHandling()
-// "접근 불가" 페이지 URL 설정
-//                .accessDeniedPage("/forbidden.html");
     }
 }

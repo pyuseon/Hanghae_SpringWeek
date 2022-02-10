@@ -17,19 +17,22 @@ public class Orders {
     @Id
     private Long id;
 
+    // 음식점 이름
     @Column(nullable = false)
     private String restaurantName;
 
+    // 주문 메뉴
     @OneToMany
     @JoinColumn(name = "ORDER_ID")
     private List<OrderDetails> foods;
 
+    // 배달비
     @Column(nullable = false)
     private Long deliveryFee;
 
+    // 총 금액
     @Column(nullable=false)
     private int totalPrice;
-
 
     public Orders(String restaurantname, List<OrderDetails> foods,
                   Long deliveryPrice, Integer totalPrice) {

@@ -33,69 +33,66 @@ public class OrderService {
         this.orderDetailsRepository = orderDetailsRepository;
     }
 
-    // 주문 목록 저장하기
-    public Orders addOrders(List<DetailsRequestDto> detailsRequestDtos, Long restaurantId,
-                            Long x , Long y) throws Exception {
+    public Orders addOrders(List<DetailsRequestDto> detailsRequestDtos, Long restaurantId) throws Exception {
 
-        // 음식점 확인하기
+        // 등록된 음식점인지 확인하기
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
         if(!restaurant.isPresent()){
             throw new Exception("등록되지 않은 음식점 입니다.");
         }
-
         int totalPrice = 0;
 
         List <OrderDetails> orderDetailsList = new ArrayList<>(); // 데이터 입력 리스트
 
         for (DetailsRequestDto order : detailsRequestDtos) {
 
-            // 메뉴 확인하기
+            // 메뉴 등록 여부 확인
             Optional<Food> food = foodRepository.findOneByRestaurantIdAndId(restaurantId, order.getId());
             if (!food.isPresent()) {
                 throw new Exception("등록되지 않은 메뉴 입니다.");
             }
 
-            // 주문 가능 수량 체크
             String foodName = food.get().getName();
             Long quantity = order.getQuantity();
+            // 주문 가능 수량 확인
             if (order.getQuantity() < 1 || order.getQuantity() > 100) {
                 throw new Exception("주문 가능 수량을 초과합니다.");
             }
 
-            // 주문 음식 가격 계산 & 총 가격에 음식 가격 더하기
+            // 메뉴당 가격 계산
             long price = order.getQuantity() * food.get().getPrice();
+
+            // 총 가격에 메뉴당 가격 더하기
             totalPrice += price;
 
-            // 주문 음식 저장하기
+            // 주문 상세 내역에 음식명, 수량, 가격 저장하기
             OrderDetails orderDetail = new OrderDetails(foodName,quantity, price);
             orderDetailsRepository.save(orderDetail);
-            orderDetailsList.add(orderDetail);
 
+            // 주문 도메인에 저장하기 위한 주문 상세 리스트
+            orderDetailsList.add(orderDetail);
         }
 
-        // 최소 주문가격 체크
+        // 최고 주문가격 충족 여부 확인
         if(totalPrice < restaurant.get().getMinOrderPrice()){
             throw new Exception("최소 주문가격을 넘지 않습니다.");
         }
 
-        // 거리에 따른 배달비 산정 1km 당 500원 추가
-        long targetX = restaurant.get().getX();
-        long targetY = restaurant.get().getY();
-        long distance = Math.abs(x-targetX) + Math.abs(y-targetY);
 
-        totalPrice += (restaurant.get().getDeliveryFee() + 500*distance);
+        // 총 주문가격에 배달료 더하기
+        totalPrice += restaurant.get().getDeliveryFee();
 
-        // order에 주문 내역 추가 및 저장
+
+        // 주문 도메인에 주문 내역 저장하기
         Orders orders = new Orders(restaurant.get().getName(), orderDetailsList,
                 restaurant.get().getDeliveryFee(), totalPrice);
-
         orderRepository.save(orders);
-
         return orders;
     }
 
     @Transactional
     public List<Orders> getOrders() {
+        // 주문내역 모두 출력하기
         return orderRepository.findAll();
     }
 }

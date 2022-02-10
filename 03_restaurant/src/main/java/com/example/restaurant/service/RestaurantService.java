@@ -7,9 +7,6 @@ import com.example.restaurant.validator.RestaurantValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
@@ -19,33 +16,12 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
-
-    // 음식점 등록
     public Restaurant createRestaurant(RestaurantRequestDto requestDto) throws Exception {
+        // 음식점 등록 유효성 검사
         RestaurantValidator.validateRestaurant(requestDto);
         Restaurant restaurant = new Restaurant(requestDto);
+        // 음식점 저장
         restaurantRepository.save(restaurant);
-
         return restaurant;
-    }
-
-    // 음식점 목록 가져오기 (거리상 3km 내의 음식점만)
-    public List<Restaurant> getRestaurant(Long x, Long y){
-       List <Restaurant> restaurantList = restaurantRepository.findAll();
-       List <Restaurant> resultList = new ArrayList<>();
-        long userX = x;
-        long userY = y;
-
-       for(Restaurant restaurant : restaurantList){
-          Long targetX = restaurant.getX();
-          Long targetY = restaurant.getY();
-
-          long distance = Math.abs(userX-targetX) + Math.abs(userY-targetY);
-
-          if (distance < 4){
-              resultList.add(restaurant);
-          }
-       }
-       return resultList;
     }
 }
