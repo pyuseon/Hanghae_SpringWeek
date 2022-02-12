@@ -237,7 +237,6 @@
                 success: function (response) {
                     for (let i = 0; i < response.length; i++){
                         let comment = response[i];
-                        // let username = posts['username'];
                         let contents = comment['contents'];
                         let modifiedAt = comment['modifiedAt'];
                         let commentId = comment['id'];
@@ -274,13 +273,10 @@
                                     <img id="${commentId}-comment-edit" class="icon-start-edit" src="/images/edit.png" alt="" onclick="editComment('${commentId}')">
                                     <img id="${commentId}-comment-delete" class="icon-delete" src="/images/delete.png" alt="" onclick="deleteCommentConfirm('${commentId}')">
                                     <img id="${commentId}-comment-submit" class="icon-end-edit" src="/images/done.png" alt="" onclick="submitEditComment('${commentId}')">
-
                                    </div>
                                 </div> `
                         $('#comment-box').append(tempHtml);
                     }
-
-
                 }
             })
         }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PageController {
 
+
     @GetMapping("/posts/detail")
     public String detail(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails){
         if(userDetails == null){
@@ -23,11 +24,13 @@ public class PageController {
     }
 
 
+
     @GetMapping("/posting")
     public String posting(){
 
         return "posting";
     }
+
 
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails){

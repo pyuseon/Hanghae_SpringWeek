@@ -19,14 +19,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-//    public Comment createComment(Comment requestDto){
-//        Comment comment = new Comment(requestDto);
-//        commentRepository.save(comment);
-//        return comment;
-//    }
 
-
-    @Transactional // 업데이트에 꼭 반영 해줘야 된다 !
+    @Transactional // 업데이트에 꼭 반영 해줘야 된다 ! (코멘트 수정하기)
     public Long update(Long id, CommentRequestDto requestDto) {// public 반환값 update(재료)
         // NullPointerException :  내가 가르키는 것이 없다.
         // IllegalArgumentException : 내가 찾는것이 잘못되었다.

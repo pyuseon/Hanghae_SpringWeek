@@ -17,11 +17,6 @@ public class PostController {
     private final PostRepository postRepository;
     private final PostService postService;
 
-//    @Autowired
-//    public PostController(PostService postService) {
-//
-//        this.postService = postService;
-//    }
 
     @PostMapping("/posting")
     // @RequestBody 요청이 들어있는 바디에 들어있는 친구를 가져와라
@@ -35,14 +30,14 @@ public class PostController {
         return  postRepository.save(post);
     }
 
-
+    // 전체 포스트 가져오기
     @GetMapping("/posts")
     public List<Post> readPost(){
         return
                 postRepository.findAllByOrderByModifiedAtDesc();
     }
 
-
+    // 게시물 하나만 조회
     @GetMapping ("/posts/detail/{id}")
     public Post showOnePost(@PathVariable Long id) {
         Post post;
@@ -52,19 +47,21 @@ public class PostController {
         return post;
     }
 
+    // 게시물 수정하기
     @PutMapping("/posting/detail/{id}")
     public Long updatePost(@PathVariable Long id,
                            @RequestBody PostRequestDto requestDto) {
         return postService.update(id, requestDto);
     }
 
+    // 게시물 삭제하기
     @DeleteMapping("/posting/detail/{id}")
     public Long deletePost(@PathVariable Long id){
         postRepository.deleteById(id);
         return id;
     }
 
-    //로그인 사용자 정보 받아오기
+    //로그인 사용자 정보 받아오기 (더 좋은 방법이 없을까요?)
     @GetMapping("/post/current")
     public String getUserinfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userDetails.getUser().getUsername();

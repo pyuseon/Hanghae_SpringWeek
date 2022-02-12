@@ -26,15 +26,15 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
         String passwordCheck = requestDto.getPasswordCheck();
-//        Optional<User> found = userRepository.findByUsername(username);
-//        if (found.isPresent()) {
-//            throw new NullPointerException("중복된 닉네임 입니다.");
-//        }
 
+
+        // Repository에 접근은 Service에서만 할수 있나요? 따로 validation에서 repository에 접근하려 하였으나 실패하였습니다.
         if (findByUsername(username)) {
             throw new NullPointerException("중복된 닉네임 입니다.");
         }
 
+
+        // 유효성 검사
         SignupValidator.validateSignupInput(username, password, passwordCheck);
 
 
@@ -51,22 +51,5 @@ public class UserService {
         return  userRepository.findByUsername(username).isPresent();
     }
 
-//    public void Optional<User> getId(String username) {
-//// 회원 ID 중복 확인
-//        Optional<User> found = userRepository.findByUsername(username);
-//        return found;
-//    }
-
-
-//    public Map<String, String> validateHandling(Errors errors) {
-//        Map<String, String> validatorResult = new HashMap<>();
-//
-//        for (FieldError error : errors.getFieldErrors()) {
-//            String validKeyName = String.format("valid_%s", error.getField());
-//            validatorResult.put(validKeyName, error.getDefaultMessage());
-//        }
-//
-//        return validatorResult;
-//    }
 
 }

@@ -32,16 +32,19 @@ public class CommentController {
         return commentRepository.save(comment);
     }
 
+    // 댓글 조회하기
     @GetMapping("/comment/{postId}")
     public List<Comment> showComments(@PathVariable Long postId) {
         return commentRepository.findAllByPostIdOrderByModifiedAtDesc(postId);
     }
 
+    // 댓글 수정하기
     @PutMapping("/commenting/{id}")
     public Long updatePost(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
         return commentService.update(id, requestDto);
     }
 
+    // 댓글 삭제하기
     @DeleteMapping("/commenting/{id}")
     public Long deletePost(@PathVariable Long id){
         commentRepository.deleteById(id);

@@ -19,20 +19,13 @@ public class SignupValidator {
     }
     public static void validateSignupInput(String username, String password, String passwordCheck) {
         String usernamePattern = "^[a-zA-Z0-9]*$"; //숫자만
-//        Optional<User> found;
-//        found = UserService.getId(username);
-//        Optional<User> found = null;
-//        if (userRepository != null) {
-//            found = userRepository.findByUsername(username);
-//        }
-//
-//        if (found.isPresent()) {
-//            throw new NullPointerException("중복된 닉네임 입니다.");
-//        }
+
+        // 닉네임 글자 수 확인
         if (!Pattern.matches(usernamePattern, username) || username.length() < 3) {
             throw new NullPointerException("닉네임은 세글자 이상이어야 하며 영어, 숫자만 허용합니다.");
         }
 
+        // 비밀번호 글자수 확인
         if (password.length() < 4) {
             throw new NullPointerException("비밀번호는 4글자 이상 입력해주세요.");
         }

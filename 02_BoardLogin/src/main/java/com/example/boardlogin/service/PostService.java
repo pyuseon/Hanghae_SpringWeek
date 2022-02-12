@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-//@Getter
-//@RequiredArgsConstructor // final 선언된 아이는 내가 꼭 넣어줄게
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -17,14 +15,6 @@ public class PostService {
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-
-//    public Post createPost(PostRequestDto requestDto) {
-//// 요청받은 DTO 로 DB에 저장할 객체 만들기
-//        Post post = new Post(requestDto);
-//        postRepository.save(post);
-//
-//        return post;
-//    }
 
 
     @Transactional // 업데이트에 꼭 반영 해줘야 된다 !

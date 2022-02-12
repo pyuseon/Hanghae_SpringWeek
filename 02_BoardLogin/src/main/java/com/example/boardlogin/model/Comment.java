@@ -27,10 +27,7 @@ public class Comment extends Timestamped{
     private String contents;
 
 
-
     public Comment(CommentRequestDto requestDto, Long userId, String username) {
-//        this.username = requestDto.getUsername();
-//        this.title = requestDto.getTitle();
         this.postId = requestDto.getPostId();
         this.id = requestDto.getId();
         this.contents = requestDto.getContents();
@@ -39,16 +36,12 @@ public class Comment extends Timestamped{
     }
 
     public Comment(Long id, Long postId, String contents) {
-//        this.username = username;
-//        this.title = username;
         this.postId = postId;
         this.id = id;
         this.contents = contents;
     }
 
     public void update(CommentRequestDto requestDto) {
-//        this.username = requestDto.getUsername();
-//        this.title = requestDto.getTitle();
         this.postId = requestDto.getPostId();
         this.id = requestDto.getId();
         this.contents = requestDto.getContents();
